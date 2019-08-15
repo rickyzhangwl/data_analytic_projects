@@ -1,0 +1,257 @@
+---
+title: "Association Rules Project"
+output:
+  html_notebook: default
+  pdf_document: default
+---
+
+# 1. Problem Statement
+**Instacart** is an American technology company that operates as a same-day grocery delivery and pick-up service in the U.S. and Canada. Customers can shop for groceries through the Instacart mobile app or Instacart.com from the company's more than 300 national, regional and local retailer partners.
+
+This article is going to use Association Rules on Instacart transaction data to make recommendation to help retailers. We will analyze:
+
+1. What's the most frequent items?
+2. What's the most frequent bought-together items?
+3. What will customers purchase before buying specific item?
+4. What will customers purchase after buying specific item?
+
+
+# 2. Data Preparation
+The data is from [Kaggle](https://www.kaggle.com/c/instacart-market-basket-analysis). To focus on Association Rules Analysis, we will use two data files to do the market data analysis. One is `order_products__prior.csv`, the other one is `products.csv`.
+
+```{r warning=FALSE}
+# Load required packages
+library(dplyr)
+library(arules)
+library(arulesViz)
+library(ggplot2)
+```
+
+```{r}
+# Load the data files
+orders <- read.csv("order_products__prior.csv", nrows = 30000) # to reduce computability, we just load the first 30000 rows.
+
+products <- read.csv("products.csv")
+```
+
+```{r}
+# Check the data structure
+glimpse(orders)
+glimpse(products)
+```
+
+```{r}
+# Inspect first few rows
+head(orders)
+head(products)
+```
+
+To analyze each baasket items, it is necessary to know what items is in each basket/order. We just have `product id` in `orders` data but we can combine the two dataset on `product_id` then group the data by `odrder_id` to have `product_name` together with `order_id`.
+
+```{r}
+# Join the data on product_id
+df <- orders %>%
+  inner_join(products, by = "product_id") %>%
+  group_by(order_id) %>%
+  summarise(basket = as.vector(list(product_name)))
+```
+
+```{r}
+# check the cleaned data
+head(df)
+```
+
+```{r}
+# convert dataframe to sparse matrix for further analysis
+df_tr <- as(df$basket, "transactions")
+```
+
+```{r}
+# check how many transactions and items
+df_tr
+```
+
+```{r}
+# inspect first few transactions
+inspect(head(df_tr))
+```
+
+
+# 3. Explorary Data Analysis
+```{r}
+# Display the distribution of number of items per basket
+hist(size(df_tr), breaks = 0:80, xaxt = "n",
+     main = "Number of Items per Basket", xlab = "Number of Items", col = "#00ADB5")
+axis(side = 1, at = seq(0, 80, by = 10), cex.axis = 0.8) # set x-axis label
+mtext(paste("Total Baskets: ", length(df_tr)), line = -1) # set sub-title
+```
+
+There are total 2966 baskets and the baskets with 2 to 9 items are most frequent. Customers seldom buy more than 20 items for a single order.
+
+```{r}
+itemFrequencyPlot(df_tr, topN = 15, type = "absolute", col = "#00ADB5",
+                  main = "Top 15 Most Frequent Items - Absolute")
+```
+
+```{r}
+itemFrequencyPlot(df_tr, topN = 15, type = "relative", col = "#00ADB5",
+                  main = "Top 15 Most Frequent Items - Relative")
+```
+
+It can be found that the top 15 most popular items are all fruits or vegetables. Banana and organic banana is most popular with support over 0.10, then are Organic Strawberries, Organic Baby Spinach, Organic Hass Avocado and Organic Avocado with support higher than 0.05. Two thirds of the top 15 items are ogranic, marking organic food is very popular in North America.
+
+
+# 4. Association Rules Analysis
+#### 4.1 The Most Frequent Bought-together Itemsets
+```{r}
+# use apriori function to get most frequent itemsets
+ft_rules <- apriori(df_tr, parameter = list(target = "frequent itemsets", supp = 0.002, minlen = 2))
+
+# inspect the rules by support from high to low
+inspect(sort(ft_rules, by = "support", decreasing = T)[1:10]) # top 10 itemsets
+```
+
+```{r}
+# Plot the top 10 itemsets
+plot(sort(ft_rules, by = "support", decreasing = T)[1:10], method = "graph", control = list(cex=0.6), main = "Top 10 Most Frequent Bought-Together Itemsets")
+```
+
+The items in the top 10 most frequnet bought-together itemsets are all ranking top 15 popular items. More specificly, they are in type like "Banana/Organic Banana" + "another top 15 poplular item". To dig deeper, wow we would like to know customers tend to purchase what items before and after buying bananas.
+
+#### 4.2 Choice of Support and Confidence
+Before we move to create association rules, we need to choose appropriate support and confidence value. So we choose a list of support and confidence values. Because confidence shows how likely item X is purchased when item Y is purchased, we set it at least 0.65.
+```{r}
+# Support and confidence values
+support_levels <- c(0.0035, 0.003, 0.0025, 0.002)
+confidence_levels <- seq(0.9, 0.65, by = -0.05)
+
+# Create empty integers for each support level
+library(hash)
+d <- hash()
+k <- 1
+
+# Calculate the number of rules under different support and confidence level
+for(i in support_levels) {
+  rules_count <- integer(length = length(confidence_levels))
+  
+  for(j in 1:length(confidence_levels)) {
+    rules_count[j] <- length(apriori(df_tr, parameter = list(support=i, confidence=confidence_levels[j], target = "rules", minlen = 2)))
+  }
+
+  nam <- paste("rules_supp_", i, sep = "")
+  assign(nam, rules_count)
+  d[[toString(k)]] <- rules_count
+  k <- k + 1
+}
+```
+
+```{r include=F}
+# Support and confidence values
+support_levels <- c(0.0035, 0.003, 0.0025, 0.002)
+confidence_levels <- seq(0.9, 0.65, by = -0.05)
+
+# Create empty integers for each support level
+library(hash)
+d <- hash()
+k <- 1
+
+# Calculate the number of rules under different support and confidence level
+for(i in support_levels) {
+  rules_count <- integer(length = length(confidence_levels))
+  
+  for(j in 1:length(confidence_levels)) {
+    rules_count[j] <- length(apriori(df_tr, parameter = list(support=i, confidence=confidence_levels[j], target = "rules", minlen = 2)))
+  }
+
+  nam <- paste("rules_supp_", i, sep = "")
+  assign(nam, rules_count)
+  d[[toString(k)]] <- rules_count
+  k <- k + 1
+}
+```
+
+```{r}
+# combine the four datasets with different support level
+num_rules <- data.frame(d[["1"]], d[["2"]], d[["3"]], d[["4"]], confidence_levels)
+
+# plot the rules numbers in different support and confidence levels
+ggplot(num_rules, aes(x = confidence_levels)) +
+    
+  geom_line(aes(y = d[["1"]], color = paste("Support level of", support_levels[1]))) +
+  geom_point(aes(y = d[["1"]], color = paste("Support level of", support_levels[1]))) +
+  
+  geom_line(aes(y = d[["2"]], color = paste("Support level of", support_levels[2]))) +
+  geom_point(aes(y = d[["2"]], color = paste("Support level of", support_levels[2]))) +
+  
+  geom_line(aes(y = d[["3"]], color = paste("Support level of", support_levels[3]))) +
+  geom_point(aes(y = d[["3"]], color = paste("Support level of", support_levels[3]))) +
+  
+  geom_line(aes(y = d[["4"]], color = paste("Support level of", support_levels[4]))) +
+  geom_point(aes(y = d[["4"]], color = paste("Support level of", support_levels[4]))) +
+  
+  scale_x_continuous(breaks = seq(0.65, 0.9, by = 0.05), # label the confidence values
+                     labels = seq(0.65, 0.9, by = 0.05)) +
+  
+  labs(title = "Number of Rules by Support & Confidence",
+       x = "Confidence", y = "Count") +
+  
+  theme_bw() + # set theme to blankwhite
+  theme(legend.title = element_blank())
+```
+
+To ensure enough rules for analysis, we choose `support = 0.002` and `confidence = 0.7` to create association rules, as it have about 9 rules under this condition.
+
+#### 4.3 What Items Would Customers Purchase Before Buying Banana?
+```{r}
+# create association rules with support 0.002, confidence 0.65
+rules_1 <- apriori(df_tr, parameter = list(supp = 0.002, conf = 0.7))
+```
+
+```{r}
+inspect(rules_1)
+```
+
+```{r}
+# filter and sort the rules with "Banana" in right hand side
+bf_bnn <- sort(subset(rules_1, subset = rhs %pin% "Banana"), by = "confidence", decreasing = T)
+inspect(bf_bnn)
+```
+
+As we can see from the result, there are total 9 rules and 7 of the 9 are with `Banana` on right hand side. Let's plot the them.
+
+```{r}
+plot(bf_bnn, method = "graph", control = list(cex=0.5), 
+     main = "The Items Customers likely Purchase Before Buying Banana")
+```
+
+From above data and plot, we can find that:
+1. Customers buying `Honeycrisp Apple` and `Limes` are very likely to buy `Banana`;
+2. Customers buying organic fruit including `Avocado`, `Blackberries` etc are very likely to purchase `Organic Banana`;
+3. All the time customers buying `100% Whole Wheat Bread`, `Organic Raspberries`, customers finally purchase `Organic Banana`. If this is not single customer's behavior, we can recommend `Banana` after customers add `100% Whole Wheat Bread`, `Organic Raspberries` to cart.
+
+#### 4.4 Other High-Confidence Rules
+As there are no rules from our model with `Banana` on left hand side, we move to analyze other rules without `Banan` from the model.
+
+```{r}
+# filter the rules without Banana on rhs
+other_rule <- sort(subset(rules_1, !(rhs %pin% "Banana")), by = "confidence", decreasing = T)
+inspect(other_rule)
+```
+We got another 2 rules that could be used for recommendation system.
+
+```{r}
+# List all the 9 rules by confidence level from high to low
+selected_rules <- DATAFRAME(rules_1) %>%
+  arrange(desc(confidence))
+recomm <- paste(selected_rules$LHS, "=>", selected_rules$RHS)
+```
+
+
+# 5. Conclusion
+1. `Banana`,`Bag of Organic Bananas`, `Organic Straberries`, `Organic Baby Spinach`, `Organic Hass Avocado` and `Organic Avocado` are most frequent items with support value higher than 0.05.
+
+2. To boost the sales, we can build the recommendations with below rules:
+```{r echo=FALSE}
+recomm
+```
+
