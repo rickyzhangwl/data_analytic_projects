@@ -1,4 +1,5 @@
 ## Project: Predictive Analytics Capstone
+![pic](https://cdn.pixabay.com/photo/2017/03/05/20/08/grocery-store-2119702_1280.jpg)
 A company has 85 grocery stores and is planning to open 10 new stores at the beginning of the year. Currently, all stores use the same store format for selling their products. Up until now, the company has treated all stores similarly, shipping the same amount of product to each store. This is the beginning to cause problems as stores are suffering from product surpluses in some product categories and shortages in others. The company would like to make decisions about store formats and inventory planning.
 
 The data are stores in `StoreSalesData.csv` and `StoreInformation.csv` files.
