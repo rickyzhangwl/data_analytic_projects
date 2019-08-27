@@ -1,4 +1,5 @@
 # Project: A/B Test a New Menu Launch
+![new_menu](https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwi24qS-pqPkAhUX62EKHcdmBGYQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.bellaitalia.co.uk%2Fnew-menu&psig=AOvVaw3w1jMj-Hqz5wFSOF4GWnyX&ust=1567003595903004)
 
 ## The Business Problem
 Round Roasters is an upscale coffee chain with locations in the western United States of America. The executive team conducted a market test with a new menu and needs to figure whether the new menu can drive enough sales to offset the cost of marketing the new menu. **This article is to analyze the A/B test and write up a recommendation to whether the coffee restaurant chain should launch this new menu.**
