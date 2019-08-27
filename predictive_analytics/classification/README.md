@@ -1,4 +1,5 @@
 # Project: Predicting Default Risk
+![pic](https://www.incimages.com/uploaded_files/image/970x450/business-loan-illustration-1940x900_35212.jpg)
 
 ## The Business Problem
 A small bank got about 500 loan applications and I am responsible for determining if customers are creditworthy to give a loan to. For this project, I will analyze the business problem using the classification model and provide a list of creditworthy customers to the manager of the bank.
