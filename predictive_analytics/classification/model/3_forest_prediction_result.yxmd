@@ -1,0 +1,416 @@
+<?xml version="1.0"?>
+<AlteryxDocument yxmdVer="2019.1">
+  <Nodes>
+    <Node ToolID="1">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
+        <Position x="126" y="126" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Passwords />
+          <File OutputFileName="" FileFormat="19" SearchSubDirs="False" RecordLimit="">C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\cleaned-training.yxdb</File>
+          <FormatSpecificOptions />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>cleaned-training.yxdb</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Credit-Application-Result" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Account-Balance" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Duration-of-Credit-Month" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Payment-Status-of-Previous-Credit" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Purpose" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Credit-Amount" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Value-Savings-Stocks" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Length-of-current-employment" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Instalment-per-cent" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Most-valuable-available-asset" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Age-years" source="Formula: If IsNull([Age-years]) THEN 33 ELSE [Age-years] ENDIF" type="Double" />
+            <Field name="Type-of-apartment" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="No-of-Credits-at-this-Bank" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\credit-data-training.xlsx|||`Sheet1$`" type="V_String" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileInput" />
+    </Node>
+    <Node ToolID="2">
+      <GuiSettings>
+        <Position x="222" y="126" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Value name="estimation pct">70</Value>
+          <Value name="validation pct">30</Value>
+          <Value name="rand seed">1</Value>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings Macro="Predictive Tools\Create_Samples.yxmc" />
+    </Node>
+    <Node ToolID="13">
+      <GuiSettings>
+        <Position x="318" y="66" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Value name="Model Name">ForestModel</Value>
+          <Value name="Y Var">Credit-Application-Result</Value>
+          <Value name="X Vars">Account-Balance + Duration-of-Credit-Month + Payment-Status-of-Previous-Credit + Purpose + Credit-Amount + Value-Savings-Stocks + Length-of-current-employment + Instalment-per-cent + Most-valuable-available-asset + Age-years + Type-of-apartment + No-of-Credits-at-this-Bank</Value>
+          <Value name="Num Trees">500</Value>
+          <Value name="Custom Num Vars">False</Value>
+          <Value name="Num Vars">3</Value>
+          <Value name="model.size">False</Value>
+          <Value name="total.nodes">100</Value>
+          <Value name="max.depth">10</Value>
+          <Value name="node.size">5</Value>
+          <Value name="replace">True</Value>
+          <Value name="samp.rate">100</Value>
+          <Value name="inches">True</Value>
+          <Value name="in.w">5.50</Value>
+          <Value name="in.h">5.50</Value>
+          <Value name="centimeters">False</Value>
+          <Value name="cm.w">13.00</Value>
+          <Value name="cm.h">14.95</Value>
+          <Value name="graph.resolution">1x</Value>
+          <Value name="pointsize">10</Value>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <Dependencies>
+          <Implicit />
+        </Dependencies>
+      </Properties>
+      <EngineSettings Macro="Predictive Tools\Forest_Model.yxmc" />
+    </Node>
+    <Node ToolID="20">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.BrowseV2.BrowseV2">
+        <Position x="438" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <TempFile>C:\Users\admin\AppData\Local\Temp\Engine_6772_e99f70138cf94a0a8dbee62149d2c082_\Engine_2992_fd4f444ac6ac46409869efd5158705df_.yxdb</TempFile>
+          <TempFileDataProfiling />
+          <Layout>
+            <ViewMode>Single</ViewMode>
+            <ViewSize value="100" />
+            <View1>
+              <DefaultTab>Report</DefaultTab>
+              <Hints>
+                <Table />
+              </Hints>
+            </View1>
+            <View2 />
+          </Layout>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxBrowseV2" />
+    </Node>
+    <Node ToolID="21">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
+        <Position x="126" y="234" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Passwords />
+          <File OutputFileName="" RecordLimit="" SearchSubDirs="False" FileFormat="25">C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`</File>
+          <FormatSpecificOptions>
+            <FirstRowData>False</FirstRowData>
+            <ImportLine>1</ImportLine>
+          </FormatSpecificOptions>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>customers-to-score.xlsx
+Table=`Sheet1$`</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Account-Balance" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Duration-of-Credit-Month" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Payment-Status-of-Previous-Credit" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Purpose" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Credit-Amount" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Value-Savings-Stocks" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Length-of-current-employment" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Instalment-per-cent" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Guarantors" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Duration-in-Current-address" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Most-valuable-available-asset" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Age-years" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Concurrent-Credits" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Type-of-apartment" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="No-of-Credits-at-this-Bank" size="255" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="V_String" />
+            <Field name="Occupation" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="No-of-dependents" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Telephone" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+            <Field name="Foreign-Worker" source="File: C:\Users\admin\Documents\Predictive Analytics\p4\Project\creditworthiness\Creditworthiness\customers-to-score.xlsx|||`Sheet1$`" type="Double" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileInput" />
+    </Node>
+    <Node ToolID="22">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
+        <Position x="222" y="234" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <OrderChanged value="False" />
+          <CommaDecimal value="False" />
+          <SelectFields>
+            <SelectField field="Account-Balance" selected="True" />
+            <SelectField field="Duration-of-Credit-Month" selected="True" />
+            <SelectField field="Payment-Status-of-Previous-Credit" selected="True" />
+            <SelectField field="Purpose" selected="True" />
+            <SelectField field="Credit-Amount" selected="True" />
+            <SelectField field="Value-Savings-Stocks" selected="True" />
+            <SelectField field="Length-of-current-employment" selected="True" />
+            <SelectField field="Instalment-per-cent" selected="True" />
+            <SelectField field="Most-valuable-available-asset" selected="True" />
+            <SelectField field="Age-years" selected="True" />
+            <SelectField field="Type-of-apartment" selected="True" />
+            <SelectField field="No-of-Credits-at-this-Bank" selected="True" />
+            <SelectField field="*Unknown" selected="False" />
+          </SelectFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSelect" />
+    </Node>
+    <Node ToolID="23">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.BrowseV2.BrowseV2">
+        <Position x="354" y="294" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <TempFile>C:\Users\admin\AppData\Local\Temp\Engine_6772_e99f70138cf94a0a8dbee62149d2c082_\Engine_2992_ae4f70e652f545e3a3fae0b6726ed8f2_.yxdb</TempFile>
+          <Layout>
+            <View1>
+              <Hints>
+                <Table />
+              </Hints>
+            </View1>
+          </Layout>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxBrowseV2" />
+    </Node>
+    <Node ToolID="25">
+      <GuiSettings Plugin="Score">
+        <Position x="462" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Value name="modelChoice">Local Model</Value>
+          <Value name="score field">
+          </Value>
+          <Value name="is oversampled">False</Value>
+          <Value name="oversampled value">
+          </Value>
+          <Value name="original percent">2</Value>
+          <Value name="log y">False</Value>
+          <Value name="prediction.interval">False</Value>
+          <Value name="interval.level">95</Value>
+          <Value name="append.xdf">False</Value>
+          <Value name="num.records">256000</Value>
+          <Value name="credentials">
+          </Value>
+          <Value name="models">
+          </Value>
+          <Value name="page">
+          </Value>
+          <Value name="errorStatus">
+          </Value>
+          <Value name="modelDetailJSON">
+          </Value>
+          <Value name="modelDetails">{"Name":"","Owner":"","Status":"","Id":"","LastDeployment":"","LastUpdated":"","LatestVersion":"","ActiveVersion":"","NumReplications":"","NumVersions":""}</Value>
+          <Value name="promoteURL">
+          </Value>
+          <Value name="username">
+          </Value>
+          <Value name="model_name">
+          </Value>
+          <Value name="model_owner">
+          </Value>
+          <Value name="apiKey">
+          </Value>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings Macro="Score\Supporting_Macros\score-engine.yxmc" EngineDll="Macro" EngineDllEntryPoint="Score\Supporting_Macros\score-engine.yxmc" />
+    </Node>
+    <Node ToolID="26">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.BrowseV2.BrowseV2">
+        <Position x="774" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <TempFile>C:\Users\admin\AppData\Local\Temp\Engine_6772_e99f70138cf94a0a8dbee62149d2c082_\Engine_2992_9991abd5b1f04580b8c757f8f1b21677_.yxdb</TempFile>
+          <TempFileDataProfiling />
+          <Layout>
+            <ViewMode>Single</ViewMode>
+            <ViewSize value="100" />
+            <View1>
+              <DefaultTab>Profile</DefaultTab>
+              <Hints>
+                <Table />
+              </Hints>
+            </View1>
+            <View2 />
+          </Layout>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxBrowseV2" />
+    </Node>
+    <Node ToolID="27">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="606" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="IF [X_Creditworthy] &gt; [X_Non-Creditworthy] THEN 1 ELSE 0 ENDIF" field="Creditworthy_Result" size="8" type="Int64" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>Creditworthy_Result = IF [X_Creditworthy] &gt; [X_Non-Creditworthy] THEN 1 ELSE 0 E...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="28">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="690" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Creditworthy_Result" action="Sum" rename="Sum_Creditworthy_Result" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+  </Nodes>
+  <Connections>
+    <Connection>
+      <Origin ToolID="1" Connection="Output" />
+      <Destination ToolID="2" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="2" Connection="Estimation" />
+      <Destination ToolID="13" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="13" Connection="Reports" />
+      <Destination ToolID="20" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="13" Connection="Output" />
+      <Destination ToolID="25" Connection="Data" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="22" Connection="Output" />
+      <Destination ToolID="25" Connection="Model" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="21" Connection="Output" />
+      <Destination ToolID="22" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="22" Connection="Output" />
+      <Destination ToolID="23" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="25" Connection="Output" />
+      <Destination ToolID="27" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="27" Connection="Output" />
+      <Destination ToolID="28" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="28" Connection="Output" />
+      <Destination ToolID="26" Connection="Input" />
+    </Connection>
+  </Connections>
+  <Properties>
+    <Memory default="True" />
+    <GlobalRecordLimit value="0" />
+    <TempFiles default="True" />
+    <Annotation on="True" includeToolName="False" />
+    <ConvErrorLimit value="10" />
+    <ConvErrorLimit_Stop value="False" />
+    <CancelOnError value="False" />
+    <DisableBrowse value="False" />
+    <EnablePerformanceProfiling value="False" />
+    <DisableAllOutput value="False" />
+    <ShowAllMacroMessages value="False" />
+    <ShowConnectionStatusIsOn value="True" />
+    <ShowConnectionStatusOnlyWhenRunning value="True" />
+    <ZoomLevel value="0" />
+    <LayoutType>Horizontal</LayoutType>
+    <MetaInfo>
+      <NameIsFileName value="True" />
+      <Name>3_forest_prediction_result</Name>
+      <Description />
+      <RootToolName />
+      <ToolVersion />
+      <ToolInDb value="False" />
+      <CategoryName />
+      <SearchTags />
+      <Author />
+      <Company />
+      <Copyright />
+      <DescriptionLink actual="" displayed="" />
+      <Example>
+        <Description />
+        <File />
+      </Example>
+    </MetaInfo>
+    <Events>
+      <Enabled value="True" />
+    </Events>
+  </Properties>
+</AlteryxDocument>
