@@ -14,9 +14,11 @@ The information I have:
 ## Step 1: Business and Data Understanding
 #### Key Decisions:
 **1. What decisions needs to be made?**
+
 The decision should be made to recommend the city for opening Pawdacity’s newest store based on predicted yearly sales.
 
 **2. What data is needed to inform those decisions?**
+
 To inform the decision, the current Pawdacity sales data and corresponding demographic information of the cities having Pawdacity stores is needed, and the demographic data of those cities treated as potential new store location is needed.
 
 ## Step 2: Building the Training Set
@@ -34,6 +36,7 @@ To inform the decision, the current Pawdacity sales data and corresponding demog
 Using the IQR method, I can determine if there are outlier cities for each of the variables and then justify which city that has at least one outlier value should be removed.
 
 **IQR Steps**
+
 To calculate the upper fence and the lower fence, here are the exact steps:
 1 . Calculate 1st quartile Q1 and 3rd quartile Q3 of the dataset. 
 2 . Calculate the Interquartile Range: IQR = Q3 - Q1
@@ -41,7 +44,7 @@ To calculate the upper fence and the lower fence, here are the exact steps:
 4 . Subtract 1.5IQR to Q1 to get the lower fence: Lower Fence = Q1 - 1.5IQR
 5 . Values above the Upper Fence and values below the Lower Fence are outliers
 
-#### Are there any cities that are outliers in the training set? Which outlier have you chosen to remove or impute?
+#### Determine the Outliers
 After training set building, the training set is created as below:
 ![pic here](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/data_wrangling/pics/cleaned_training_set.png)
 
