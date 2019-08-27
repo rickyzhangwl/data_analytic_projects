@@ -1,7 +1,7 @@
 ## Project: Predictive Analytics Capstone
 A company has 85 grocery stores and is planning to open 10 new stores at the beginning of the year. Currently, all stores use the same store format for selling their products. Up until now, the company has treated all stores similarly, shipping the same amount of product to each store. This is the beginning to cause problems as stores are suffering from product surpluses in some product categories and shortages in others. The company would like to make decisions about store formats and inventory planning.
 
-The data are stores in StoreSalesData.csv and StoreInformation.csv files.
+The data are stores in `StoreSalesData.csv` and `StoreInformation.csv` files.
 
 ## 1. Determine Store Formats for Existing Stores
 To remedy the product surplus and shortages, the company wants to introduce different store formats. Each store format will have a different product selection in order to better match local demand. The actual building sizes will not change, just the product selection and internal layouts. The terms formats and segments will be used interchangeably throughout this project. 
@@ -17,17 +17,20 @@ The steps to determine the optimal number of store formats is:
 - Use a K-means clustering model.
 
 Based on my model, the optimal number of store formats is 3. I arrived this result by using K-Centroids Diagnostics tool with Clustering Method – K-Means on the category sales percentage data. The corresponding AR and CH indices showed that when number of clusters is 3, they have highest median and mean values.
-![PIC1]()
+
+![AR and CH indices](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/1_ar_ch_indices.png)
 
 #### 1.2 How many stores fall into each store format?
 The result showed that 23 stores in Cluster 1, 29 stores in Cluster 2 and 33 stores in Cluster 3.
-![PIC2]()
+
+![Clustering Result](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/2_cluster_result.png)
 
 #### 1.3 Based on the results of the clustering model, what is one way that the clusters differ from one another?
 Cluster 1 has the smallest number of stores. Cluster 2 has the highest Average Distance, it is the least compact cluster with largest Separation value. Cluster 3 owns the greatest number of stores with the smallest Average Distance and Separation value. It is the most compact cluster.
 
 **1.4 Please provide a Tableau visualization (saved as a Tableau Public file) that shows the location of the stores, uses color to show cluster, and size to show total sales.**
-![PIC3]()
+
+![Store Locations](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/3_store_location.png)
 
 The store locations of each cluster is shown in [Tableau Public](https://public.tableau.com/profile/rickyzhang3885#!/vizhome/StoreLocationsofDifferentClusters/2?publish=yes).
 
@@ -43,6 +46,7 @@ Finally, after model comparison I chose Boosted Model to predict the best store 
 
 #### 2.2 What format do each of the 10 new stores fall into? Please fill in the table below.
 After prediction by Boosted Model, 3 stores fall into Cluster 1, 6 stores in Cluster 2 and 1 store in Cluster 3.
+
 | Store Number | Segment |
 |--------------|:-------:|
 | S0086        | 3       |
@@ -93,4 +97,4 @@ The Forecast Monthly Produce Sales Data Table
 Visualization of Forecast Produce Sales
 ![PIC9]()
 
-The forecast visualization could be found at [Tableau Public]([https://public.tableau.com/profile/rickyzhang3885#!/vizhome/ProduceSalesOvertime/Sheet1?publish=yes](https://public.tableau.com/profile/rickyzhang3885#!/vizhome/ProduceSalesOvertime/Sheet1?publish=yes)).
+The forecast visualization could be found at [Tableau Public](https://public.tableau.com/profile/rickyzhang3885#!/vizhome/ProduceSalesOvertime/Sheet1?publish=yes)).
