@@ -93,7 +93,8 @@ ETS Model has lower values in RMSE and MASE than ARIMA Model, indicating that th
 
 #### 3.2 The table of forecasts for existing and new stores sales, and the visualization of forecasts that includes historical data, existing stores forecasts, and new stores forecasts.
 The Forecast Monthly Produce Sales Data Table
-![PIC8](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/8_forecast_sales.png)
+
+<img src="https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/8_forecast_sales.png" width = "50%" height = "50%" alt="sales table" align=center />
 
 Visualization of Forecast Produce Sales
 ![PIC9](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/9_forecast_plot.png)
