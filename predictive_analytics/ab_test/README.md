@@ -53,9 +53,9 @@ Apart from trend and seasonality, looking at the variables in RoundRoasterStore 
 To verify the potential control variables, the correlation matrix is generated as below:
 ![pic 2](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/ab_test/pics/2_corr_matrix.png)
 
-It can be found that AvgMonthSales has very great correlation with gross margin, while Sq_Ft has weak correlation with gross margin.
+It can be found that `AvgMonthSales` has very great correlation with gross margin, while `Sq_Ft` has weak correlation with gross margin.
 
-Based on above analysis, AvgMonthSales is selected as one control variable, Trend and Seasonality of A/B Controls are another 2 control variables to match treatment and control stores.
+Based on above analysis, `AvgMonthSales` is selected as one control variable, Trend and Seasonality of A/B Controls are another 2 control variables to match treatment and control stores.
 
 After matching,  we get treatment and control stores pairs as below:
 
