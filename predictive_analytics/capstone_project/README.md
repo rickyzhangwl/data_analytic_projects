@@ -1,4 +1,5 @@
 ## Project: Predictive Analytics Capstone
+![pic](https://cdn.pixabay.com/photo/2017/03/05/20/08/grocery-store-2119702_1280.jpg)
 A company has 85 grocery stores and is planning to open 10 new stores at the beginning of the year. Currently, all stores use the same store format for selling their products. Up until now, the company has treated all stores similarly, shipping the same amount of product to each store. This is the beginning to cause problems as stores are suffering from product surpluses in some product categories and shortages in others. The company would like to make decisions about store formats and inventory planning.
 
 The data are stores in `StoreSalesData.csv` and `StoreInformation.csv` files.
@@ -28,7 +29,7 @@ The result showed that 23 stores in Cluster 1, 29 stores in Cluster 2 and 33 sto
 #### 1.3 Based on the results of the clustering model, what is one way that the clusters differ from one another?
 Cluster 1 has the smallest number of stores. Cluster 2 has the highest Average Distance, it is the least compact cluster with largest Separation value. Cluster 3 owns the greatest number of stores with the smallest Average Distance and Separation value. It is the most compact cluster.
 
-**1.4 Please provide a Tableau visualization (saved as a Tableau Public file) that shows the location of the stores, uses color to show cluster, and size to show total sales.**
+**1.4 The Tableau visualization that shows the location of the stores**
 
 ![Store Locations](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/3_store_location.png)
 
@@ -92,9 +93,10 @@ ETS Model has lower values in RMSE and MASE than ARIMA Model, indicating that th
 
 #### 3.2 The table of forecasts for existing and new stores sales, and the visualization of forecasts that includes historical data, existing stores forecasts, and new stores forecasts.
 The Forecast Monthly Produce Sales Data Table
-![PIC8](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/8_forecast_data_table.png)
+
+<img src="https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/8_forecast_sales.png" width = "50%" height = "50%" alt="sales table" align=center />
 
 Visualization of Forecast Produce Sales
 ![PIC9](https://github.com/rickyzhangwl/data_analytic_projects/blob/master/predictive_analytics/capstone_project/pics/9_forecast_plot.png)
 
-The forecast visualization could be found at [Tableau Public](https://public.tableau.com/profile/rickyzhang3885#!/vizhome/ProduceSalesOvertime/Sheet1?publish=yes)).
+The forecast visualization could be found at [Tableau Public](https://public.tableau.com/profile/rickyzhang3885#!/vizhome/ProduceSalesOvertime/Sheet1?publish=yes).
