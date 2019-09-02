@@ -3,8 +3,8 @@ Here are the collections of my data analytic projects.
 
 ## Stock Related
 This folder provides stock related projects such as stock data collection, data processing, exploratory analysis etc.
-1. [Impact of Trade War on US/China Stock](https://github.com/rickyzhangwl/data_analytic_projects/tree/master/stock_related/impact_of_trade_war) ([View ipynb](https://nbviewer.jupyter.org/github/rickyzhangwl/data_analytic_projects/blob/master/stock_related/impact_of_trade_war/trade_war_stock_v2.html))
-2. [Acquire Stock Data From Yahoo Finance](https://zhuanlan.zhihu.com/p/44212853) (View ipynb(To be uploaded))
+1. [Impact of Trade War on US/China Stock](https://github.com/rickyzhangwl/data_analytic_projects/tree/master/stock_related/impact_of_trade_war) ([View html](https://nbviewer.jupyter.org/github/rickyzhangwl/data_analytic_projects/blob/master/stock_related/impact_of_trade_war/trade_war_stock_v2.html))
+2. [Acquire Stock Data From Yahoo Finance](https://github.com/rickyzhangwl/data_analytic_projects/tree/master/stock_related/bat_vs_fag) ([View html](https://nbviewer.jupyter.org/github/rickyzhangwl/data_analytic_projects/blob/master/stock_related/bat_vs_fag/bat_vs_fag.html))
 
 ## Data Visualization
 This folder contains data visualization projects coded by Python or R.
