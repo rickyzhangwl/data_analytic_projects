@@ -1,0 +1,160 @@
+---
+title: "Regression - Predicting Diamond Prices"
+output: html_notebook
+---
+
+## Project Overview
+A diamond distributor has recently decided to exit the market and has put up a set of 3,000 diamonds up for auction. Seeing this as a great opportunity to expand its inventory, a jewelry company has shown interest in making a bid. To decide how much to bid, I will use a large database of diamond prices to build a model to predict the price of a diamond based on its attributes. Then I will use the results of that model to make a recommendation for how much the company should bid.
+
+## Understand The Data
+There are two datasets. `diamonds.csv` contains the data used to build the regression model. `new_diamonds_new.csv` contains the data for the diamonds the company would like to purchase. Both datasets contain carat, cut, and clarity data for each diamond. Only the `diamonds.csv` dataset has prices. I'll be predicting prices for the `new_diamonds.csv` dataset.
+
+Variables:
+`Carat` represents the weight of the diamond, and is a numerical variable.
+`Cut` represents the quality of the cut of the diamond, and falls into 5 categories: fair, good, very good, ideal, and premium. In project zero, these categories were represented by an ordinal variable, 1-5. You can decide to use the ordinal or categorical variable.
+`Clarity` represents the internal purity of the diamond, and falls into 8 categories: I1, SI2, SI1, VS2, VS1, VVS2, VVS1, and IF (in order from least to most pure). In project zero, these categories were represented by an ordinal variable, 1-8. You can decide to use the ordinal or categorical variable.
+`Color` represents the color of the diamond, and is rated D through J, with D being the most colorless (and valuable) and J being the most yellow.
+
+## Load The Data
+```{r warning=FALSE}
+# Load packages
+library(ggplot2)
+library(tidyverse)
+library(corrplot)
+library(plotly)
+library(caTools)
+library(caret)
+```
+
+```{r}
+# Load the data
+diamonds <- read.csv("diamonds.csv")
+new_diamonds <- read.csv("new-diamonds.csv")
+
+# check data dimension
+dim(diamonds)
+dim(new_diamonds)
+```
+
+```{r}
+# inspect first few rows
+head(diamonds)
+```
+
+```{r}
+# have a glimpse on data
+glimpse(diamonds)
+```
+
+```{r}
+# check data summary
+summary(diamonds)
+```
+
+```{r}
+summary(new_diamonds)
+```
+
+
+discuss data
+
+## Data Wrangling
+```{r}
+# remove first column
+diamonds <- diamonds[-1]
+```
+
+```{r}
+# check the levels of color variable
+levels(diamonds$color)
+
+# create a new column for color ordinary data
+diamonds$color_ord <- diamonds$color
+
+# reverse levels of factor so that D is highest
+diamonds$color_ord <- fct_rev(factor(diamonds$color_ord))
+
+# change the value from categorical to numeric
+diamonds$color_ord <- as.integer(diamonds$color_ord)
+```
+
+```{r}
+# select numeric variables
+diamonds <- select(diamonds, carat, cut, color, clarity, price)
+```
+
+
+```{r}
+# inspect first few rows after data cleaning
+head(diamonds)
+```
+
+## Build Regression Model
+```{r}
+# split data into train and test sets
+set.seed(227)
+sample <- sample.int(n = nrow(diamonds), size = floor(0.9*nrow(diamonds)), replace = F)
+train <- diamonds[sample,]
+test <- diamonds[-sample,]
+```
+
+```{r}
+diamond_cor <- cor(diamonds)
+```
+
+```{r}
+corrplot(diamond_cor, method = "pie", type = "upper")
+```
+
+### Univariate Model
+```{r}
+ggplot(diamonds, aes(x=carat, y=price)) + geom_point() + geom_smooth(method = "lm")
+```
+
+```{r}
+ggplot(diamonds, aes(x=cut_ord, y=price)) + geom_point() + geom_smooth(method = "lm")
+```
+
+```{r}
+linearMod <- train(price ~ ., data = diamonds, method = 'lm', 
+                   trControl = trainControl(
+                     method = 'cv',
+                     number = 10,
+                     verboseIter = TRUE
+                   ))
+print(linearMod)
+```
+
+```{r}
+summary(linearMod)
+```
+
+```{r}
+# use the model to predict for test data
+pricePred <- predict(linearMod, data=diamonds)
+```
+
+```{r}
+mean(pricePred)
+```
+
+
+```{r}
+# combine actual and predict data
+actual_pred <- data.frame(cbind(actuals=diamonds$price, preds=pricePred))
+
+# check correlation of actual and predicted data
+cor(actual_pred)
+```
+```{r}
+head(actual_pred, 20)
+```
+
+```{r}
+summary(actual_pred)
+```
+
+```{r}
+new_diamonds$price <- predict(linearMod, data=new_diamonds[-1])
+```
+
