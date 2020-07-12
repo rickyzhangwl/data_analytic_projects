@@ -1,0 +1,181 @@
+---
+title: "Regression - Predicting Diamond Prices"
+output: html_notebook
+---
+
+## Project Overview
+A diamond distributor has recently decided to exit the market and has put up a set of 3,000 diamonds up for auction. Seeing this as a great opportunity to expand its inventory, a jewelry company has shown interest in making a bid. To decide how much to bid, I will use a large database of diamond prices to build a model to predict the price of a diamond based on its attributes. Then I will use the results of that model to make a recommendation for how much the company should bid.
+
+## Understand The Data
+There are two datasets. `diamonds.csv` contains the data used to build the regression model. `new_diamonds_new.csv` contains the data for the diamonds the company would like to purchase. Both datasets contain carat, cut, and clarity data for each diamond. Only the `diamonds.csv` dataset has prices. I'll be predicting prices for the `new_diamonds.csv` dataset.
+
+Variables:
+`Carat` represents the weight of the diamond, and is a numerical variable.
+`Cut` represents the quality of the cut of the diamond, and falls into 5 categories: fair, good, very good, premium, and ideal These categories were represented by an ordinal variable, 1-5.
+`Clarity` represents the internal purity of the diamond, and falls into 8 categories: I1, SI2, SI1, VS2, VS1, VVS2, VVS1, and IF (in order from least to most pure). These categories were represented by an ordinal variable, 1-8.
+`Color` represents the color of the diamond, and is rated D through J, with D being the most colorless (and valuable) and J being the most yellow.
+
+## Load The Data
+```{r warning=FALSE}
+# Load packages
+library(ggplot2)
+library(tidyverse)
+library(corrplot)
+library(plotly)
+library(caTools)
+library(caret)
+```
+
+```{r}
+# Load the data
+diamonds <- read.csv("diamonds.csv")
+new_diamonds <- read.csv("new-diamonds.csv")
+
+# check data dimension
+dim(diamonds)
+dim(new_diamonds)
+```
+
+```{r}
+# inspect first few rows
+head(diamonds)
+```
+
+```{r}
+# have a glimpse on data
+glimpse(diamonds)
+```
+
+```{r}
+# check data summary
+summary(diamonds)
+```
+
+```{r}
+summary(new_diamonds)
+```
+
+The `carat`, `cut_ord`, `clarity_ord`are  numeric variables and ``color`, `cut`, `clarity` contain categorical data. As there is no corresponding numeric variable for `color`, we can keep `carat`, `price` as numeric variables, select `color`, `cut`, `clarity` as categorical variables for model bulding.
+
+## Data Wrangling
+```{r}
+# remove first column as it is not useful
+diamonds <- diamonds[-1]
+```
+
+
+```{r}
+# select predictive variables for model
+diamonds <- select(diamonds, carat, cut, color, clarity, price)
+```
+
+
+```{r}
+# inspect first few rows after data cleaning
+head(diamonds)
+```
+
+## Build Regression Model
+```{r}
+# split data into train and test sets, with 90% for train sets
+set.seed(227)
+sample <- sample.int(n = nrow(diamonds), size = floor(0.9*nrow(diamonds)), replace = F)
+train <- diamonds[sample,]
+test <- diamonds[-sample,]
+```
+
+
+### Univariate Model
+```{r}
+# Plot the relation between carat and price
+ggplot(diamonds, aes(x=carat, y=price)) + geom_point() + geom_smooth(method = "lm")
+```
+
+```{r}
+# Plot the relation between cut and price
+ggplot(diamonds, aes(x=cut, y=price)) + geom_point(alpha=0.1) + geom_smooth(method = "lm")
+```
+
+It can be found that even some diamonds with very high price are with low cut level. The correlation is not obvious in this plot.
+
+```{r}
+# Try boxplot
+ggplot(diamonds, aes(x=cut, y=price)) + geom_boxplot() + geom_smooth(method = "lm")
+```
+
+```{r}
+# Train the model by train dataset
+lmMod <- lm(price ~ ., data = train)
+
+# Predict the price for test dataset
+distPred <- predict(lmMod, test)
+```
+
+```{r}
+summary(lmMod)
+```
+
+```{r}
+# combine actual and predict data
+actual_pred <- data.frame(cbind(actuals=test$price, preds=distPred))
+
+# check correlation of actual and predicted data
+cor(actual_pred)
+```
+
+```{r}
+# check the summary of the actual and predicted price
+summary(actual_pred)
+```
+
+We can see that the range of predicted price is much bigger than the actual price, but the mean values of them are close, the difference is lower than 1%! So the model is good at predicting for a large number of diamonds.
+
+
+```{r}
+# Predict the price for new diamonds
+new_diamonds <- select(new_diamonds, carat, cut, color, clarity)
+
+new_pred <- predict(lmMod, new_diamonds)
+```
+
+```{r}
+# Calulate the bid price for new diamonds
+sum(new_pred)
+```
+
+So we should use 11,764,003 dollars to bid the diamonds.
+
+## Alternative method
+```{r}
+# Train the model with original data set
+linearMod <- train(price ~ ., data = diamonds, method = 'lm', 
+                   trControl = trainControl(
+                     method = 'cv',
+                     number = 10,
+                     verboseIter = TRUE
+                   ))
+print(linearMod)
+```
+
+```{r}
+summary(linearMod)
+```
+
+```{r}
+# use the model to predict new diamonds
+pricePred <- predict(linearMod, newdata=new_diamonds)
+new_pred <- predict(lmMod, new_diamonds)
+```
+
+```{r}
+# Compare the two methods
+# total bid value
+sum(pricePred)
+sum(new_pred)
+
+# prediction summary
+summary(pricePred)
+summary(new_pred)
+```
+
+The two models have similar performance as the mean values are quite close.
